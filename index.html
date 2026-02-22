@@ -1,17 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto Number Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <title>로또 번호 생성기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 40px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .set {
+            margin: 15px 0;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Lotto Number Generator</h1>
-        <div class="numbers"></div>
-        <button id="generate">Generate Numbers</button>
-    </div>
-    <script src="main.js"></script>
+
+    <h1>🎰 로또 번호 생성기</h1>
+    <button onclick="generateLotto()">번호 생성하기</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        function generateLotto() {
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = "";
+
+            for (let j = 0; j < 5; j++) { // 5세트 생성
+                let numbers = [];
+
+                while (numbers.length < 6) {
+                    let num = Math.floor(Math.random() * 45) + 1;
+                    if (!numbers.includes(num)) {
+                        numbers.push(num);
+                    }
+                }
+
+                numbers.sort((a, b) => a - b);
+
+                let bonus;
+                do {
+                    bonus = Math.floor(Math.random() * 45) + 1;
+                } while (numbers.includes(bonus));
+
+                resultDiv.innerHTML += `
+                    <div class="set">
+                        🎟 ${j + 1}세트 : ${numbers.join(", ")} 
+                        <span style="color:red;">+ 보너스 ${bonus}</span>
+                    </div>
+                `;
+            }
+        }
+    </script>
+
 </body>
 </html>
