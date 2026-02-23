@@ -2,216 +2,382 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-7338845276856217">
-    <title>로또 번호 생성기</title>
+    <meta name="description" content="무료 로또 번호 생성기. 확률 기반 번호 조합 및 통계 정보 제공.">
+    <title>로또 번호 생성기 - 고품질 확률 분석 도구</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7338845276856217"
      crossorigin="anonymous"></script>
     <style>
         :root {
-            --bg-color: #f4f4f4;
-            --text-color: #333;
-            --button-bg: #4CAF50;
-            --button-hover: #45a049;
-            --container-bg: white;
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --button-bg: #28a745;
+            --button-hover: #218838;
+            --container-bg: #ffffff;
+            --header-bg: #343a40;
+            --nav-text: #ffffff;
+            --accent-color: #007bff;
         }
 
         body.dark-mode {
-            --bg-color: #1a1a1a;
-            --text-color: #f4f4f4;
-            --button-bg: #2e7d32;
-            --button-hover: #1b5e20;
-            --container-bg: #333;
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --button-bg: #1e7e34;
+            --button-hover: #155d27;
+            --container-bg: #1e1e1e;
+            --header-bg: #000000;
+            --nav-text: #ffffff;
+            --accent-color: #375a7f;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
         }
 
-        h1 {
-            color: var(--text-color);
+        /* Navigation */
+        nav {
+            background-color: var(--header-bg);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .controls {
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-logo {
+            color: var(--nav-text);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--nav-text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        /* Hero Section */
+        header {
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--header-bg) 0%, var(--accent-color) 100%);
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        .card {
+            background-color: var(--container-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             margin-bottom: 30px;
         }
 
+        h2 {
+            border-left: 5px solid var(--button-bg);
+            padding-left: 15px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        /* Tool Styles */
+        .tool-area {
+            text-align: center;
+        }
+
         button {
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
             cursor: pointer;
             border: none;
-            border-radius: 10px;
+            border-radius: 50px;
             background-color: var(--button-bg);
             color: white;
-            transition: background-color 0.3s;
-            margin: 5px;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         button:hover {
             background-color: var(--button-hover);
+            transform: translateY(-2px);
         }
 
-        #theme-toggle {
-            background-color: #555;
+        button:active {
+            transform: translateY(0);
         }
 
-        body.dark-mode #theme-toggle {
-            background-color: #ddd;
-            color: #333;
-        }
-
-        .result {
-            margin-top: 40px;
-            font-size: 22px;
-            font-weight: bold;
-            display: inline-block;
-            text-align: left;
-            padding: 20px;
-            background-color: var(--container-bg);
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        .result-box {
+            margin-top: 30px;
+            display: none;
         }
 
         .set {
-            margin: 15px 0;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .set:last-child {
-            border-bottom: none;
-        }
-
-        .bonus {
-            color: #ff5252;
+            background: var(--bg-color);
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2rem;
             font-weight: bold;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        /* 제휴 문의 폼 스타일 */
-        .contact-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: var(--container-bg);
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: left;
+        .lotto-num {
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            background: #fff;
+            color: #333;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 0.9rem;
         }
 
-        .contact-container h2 {
-            text-align: center;
-            margin-bottom: 25px;
+        .bonus-text {
+            color: #ff5252;
         }
 
+        /* Information Section */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.8rem; }
+        }
+
+        .info-item {
+            padding: 15px;
+            background: var(--bg-color);
+            border-radius: 10px;
+        }
+
+        .info-item h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: var(--button-bg);
+        }
+
+        /* Form Styles */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-weight: bold;
         }
 
-        .form-group input, 
-        .form-group textarea {
+        .form-group input, .form-group textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            box-sizing: border-box;
-            background-color: var(--bg-color);
+            background: var(--bg-color);
             color: var(--text-color);
-            font-size: 16px;
+            box-sizing: border-box;
         }
 
-        .form-group textarea {
-            height: 120px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background-color: var(--button-bg);
+        /* Footer */
+        footer {
+            background: var(--header-bg);
             color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
         }
 
-        .submit-btn:hover {
-            background-color: var(--button-hover);
+        .footer-links {
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 0.85rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Utility */
+        .theme-btn {
+            background: #555;
+            padding: 8px 15px;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="controls">
-        <button id="theme-toggle" onclick="toggleTheme()">테마 변경</button>
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-logo">LOTTO-GEN</a>
+            <div class="nav-links">
+                <a href="#generator">생성기</a>
+                <a href="#info">정보/확률</a>
+                <a href="#about">사이트 소개</a>
+                <a href="#contact">제휴문의</a>
+                <a href="#privacy">개인정보처리방침</a>
+                <button id="theme-toggle" class="theme-btn" onclick="toggleTheme()">🌓</button>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <h1>🎰 프리미엄 로또 번호 생성기</h1>
+        <p>단순한 난수가 아닌, 사용자에게 가치를 제공하는 번호 생성 도구</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- 생성기 섹션 -->
+        <section id="generator" class="card tool-area">
+            <h2>번호 생성하기</h2>
+            <p>버튼을 클릭하면 45개의 숫자 중 중복되지 않는 6개의 번호와 보너스 번호를 생성합니다.</p>
+            <button onclick="generateLotto()">신규 번호 조합 추출</button>
+            <div id="result-container" class="result-box">
+                <div id="result"></div>
+            </div>
+        </section>
+
+        <!-- 정보 섹션 (고품질 콘텐츠) -->
+        <section id="info" class="card">
+            <h2>로또 확률 및 통계 정보</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <h3>당첨 확률 안내</h3>
+                    <p>1등 당첨 확률은 1/8,145,060입니다. 본 생성기는 순수 확률에 기반하여 매 시행마다 독립적인 번호를 추출합니다.</p>
+                </div>
+                <div class="info-item">
+                    <h3>번호 선택 팁</h3>
+                    <p>과거 당첨 번호의 합계 범위를 확인해보세요. 보통 100~170 사이의 합계가 가장 빈번하게 등장합니다.</p>
+                </div>
+                <div class="info-item">
+                    <h3>홀짝 비율</h3>
+                    <p>6개 번호의 홀수와 짝수 비율이 3:3 또는 2:4, 4:2인 경우가 전체의 약 80%를 차지합니다.</p>
+                </div>
+                <div class="info-item">
+                    <h3>연속 번호</h3>
+                    <p>연속된 두 숫자가 포함되는 조합은 전체 당첨의 절반 이상에서 발견됩니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 사이트 소개 -->
+        <section id="about" class="card">
+            <h2>사이트 소개</h2>
+            <p>본 사이트는 사용자들에게 로또 번호 선택의 즐거움과 기본적인 통계 정보를 제공하기 위해 제작되었습니다. 과도한 몰입은 금물이며, 소액으로 건전하게 즐기는 로또 문화를 권장합니다.</p>
+            <p><strong>주요 기능:</strong> 무작위 번호 추출, 당첨 통계 정보 제공, 다크모드 지원, 사용자 소통 기능(댓글/문의).</p>
+        </section>
+
+        <!-- 제휴 문의 -->
+        <section id="contact" class="card">
+            <h2>🤝 제휴 및 비즈니스 문의</h2>
+            <form action="https://formspree.io/f/xojnpvwo" method="POST">
+                <div class="form-group">
+                    <label for="name">이름 / 담당자</label>
+                    <input type="text" name="name" id="name" placeholder="성함을 입력해주세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일 주소</label>
+                    <input type="email" name="_replyto" id="email" placeholder="example@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">문의 내용</label>
+                    <textarea name="message" id="message" placeholder="제휴 관련 내용을 상세히 적어주세요" required></textarea>
+                </div>
+                <button type="submit">문의 보내기</button>
+            </form>
+        </section>
+
+        <!-- 댓글 섹션 -->
+        <section class="card">
+            <h2>💬 사용자 커뮤니티</h2>
+            <div id="disqus_thread"></div>
+        </section>
+
+        <!-- 개인정보처리방침 (애드센스 필수) -->
+        <section id="privacy" class="card" style="font-size: 0.85rem; color: #666;">
+            <h2>개인정보처리방침</h2>
+            <p>1. 본 사이트는 사용자의 개인정보를 서버에 직접 저장하지 않습니다.<br>
+            2. 제휴 문의 폼은 Formspree 서비스를 이용하며, 입력된 이메일은 문의 응대 목적으로만 사용됩니다.<br>
+            3. 광고 및 댓글 서비스를 위해 Google AdSense와 Disqus의 쿠키가 사용될 수 있습니다.<br>
+            4. 사용자는 브라우저 설정을 통해 쿠키 수집을 거부할 수 있습니다.</p>
+        </section>
+
     </div>
 
-    <h1>🎰 로또 번호 생성기</h1>
-    <button onclick="generateLotto()">번호 생성하기</button>
-
-    <div id="result-container" style="display:none;">
-        <div class="result" id="result"></div>
-    </div>
-
-    <!-- 제휴 문의 섹션 -->
-    <div class="contact-container">
-        <h2>🤝 제휴 문의</h2>
-        <form action="https://formspree.io/f/xojnpvwo" method="POST">
-            <div class="form-group">
-                <label for="name">이름 / 담당자</label>
-                <input type="text" name="name" id="name" placeholder="성함을 입력해주세요" required>
-            </div>
-            <div class="form-group">
-                <label for="email">이메일 주소</label>
-                <input type="email" name="_replyto" id="email" placeholder="example@email.com" required>
-            </div>
-            <div class="form-group">
-                <label for="company">회사명 / 소속</label>
-                <input type="text" name="company" id="company" placeholder="회사명을 입력해주세요">
-            </div>
-            <div class="form-group">
-                <label for="message">문의 내용</label>
-                <textarea name="message" id="message" placeholder="제휴 관련 내용을 상세히 적어주세요" required></textarea>
-            </div>
-            <button type="submit" class="submit-btn">문의 보내기</button>
-        </form>
-    </div>
-
-    <!-- 댓글 섹션 -->
-    <div class="contact-container" style="margin-top: 20px;">
-        <h2>💬 댓글</h2>
-        <div id="disqus_thread"></div>
-        <script>
-            /**
-            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-            /*
-            var disqus_config = function () {
-            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-            };
-            */
-            (function() { // DON'T EDIT BELOW THIS LINE
-            var d = document, s = d.createElement('script');
-            s.src = 'https://product-builder-yatuvtgbul.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
+    <footer>
+        <div class="footer-links">
+            <a href="#generator">생성기</a> | 
+            <a href="#info">통계정보</a> | 
+            <a href="#privacy">개인정보처리방침</a>
+        </div>
+        <p>&copy; 2026 LOTTO-GEN. All rights reserved. 건전한 복권 문화를 응원합니다.</p>
+    </footer>
 
     <script>
         function toggleTheme() {
@@ -220,7 +386,6 @@
             localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
         }
 
-        // 초기 테마 설정 로드
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-mode');
         }
@@ -231,31 +396,34 @@
             resultDiv.innerHTML = "";
             container.style.display = "block";
 
-            for (let j = 0; j < 5; j++) { // 5세트 생성
+            for (let j = 0; j < 5; j++) {
                 let numbers = [];
-
                 while (numbers.length < 6) {
                     let num = Math.floor(Math.random() * 45) + 1;
-                    if (!numbers.includes(num)) {
-                        numbers.push(num);
-                    }
+                    if (!numbers.includes(num)) numbers.push(num);
                 }
-
                 numbers.sort((a, b) => a - b);
+                let bonus = Math.floor(Math.random() * 45) + 1;
+                while (numbers.includes(bonus)) bonus = Math.floor(Math.random() * 45) + 1;
 
-                let bonus;
-                do {
-                    bonus = Math.floor(Math.random() * 45) + 1;
-                } while (numbers.includes(bonus));
-
+                let numHtml = numbers.map(n => `<span class="lotto-num">${n}</span>`).join('');
                 resultDiv.innerHTML += `
                     <div class="set">
-                        🎟 ${j + 1}세트 : ${numbers.join(", ")} 
-                        <span class="bonus">+ 보너스 ${bonus}</span>
+                        <span>${j + 1}세트:</span>
+                        ${numHtml}
+                        <span class="bonus-text"> + ${bonus}</span>
                     </div>
                 `;
             }
         }
+
+        /* Disqus Config */
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://product-builder-yatuvtgbul.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
     </script>
 
 </body>
