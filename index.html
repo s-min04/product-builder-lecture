@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-7338845276856217">
-    <meta name="description" content="무료 로또 번호 생성기. 확률 기반 번호 조합 및 통계 정보 제공.">
-    <title>로또 번호 생성기 - 고품질 확률 분석 도구</title>
+    <meta name="description" content="무료 로또 및 연금복권 번호 생성기. 확률 기반 번호 조합 및 당첨 통계 정보 제공.">
+    <title>로또 & 연금복권 생성기 - 고품질 분석 도구</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7338845276856217"
      crossorigin="anonymous"></script>
     <style>
@@ -18,6 +18,7 @@
             --header-bg: #343a40;
             --nav-text: #ffffff;
             --accent-color: #007bff;
+            --pension-color: #ffc107;
         }
 
         body.dark-mode {
@@ -132,12 +133,44 @@
             font-size: 1.8rem;
         }
 
+        /* Tabs Interface */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            border: 2px solid var(--button-bg);
+            background: transparent;
+            color: var(--button-bg);
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--button-bg);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         /* Tool Styles */
         .tool-area {
             text-align: center;
         }
 
-        button {
+        .generate-btn {
             padding: 15px 40px;
             font-size: 1.1rem;
             font-weight: bold;
@@ -150,13 +183,18 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        button:hover {
+        .generate-btn:hover {
             background-color: var(--button-hover);
             transform: translateY(-2px);
         }
 
-        button:active {
-            transform: translateY(0);
+        .pension-btn {
+            background-color: var(--pension-color);
+            color: #333;
+        }
+
+        .pension-btn:hover {
+            background-color: #e0a800;
         }
 
         .result-box {
@@ -175,9 +213,10 @@
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
-        .lotto-num {
+        .lotto-num, .pension-num {
             width: 35px;
             height: 35px;
             line-height: 35px;
@@ -187,6 +226,15 @@
             display: inline-block;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .pension-group {
+            background: #ff5252;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-size: 1rem;
         }
 
         .bonus-text {
@@ -267,6 +315,10 @@
             background: #555;
             padding: 8px 15px;
             font-size: 0.8rem;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -287,41 +339,59 @@
     </nav>
 
     <header>
-        <h1>🎰 프리미엄 로또 번호 생성기</h1>
-        <p>단순한 난수가 아닌, 사용자에게 가치를 제공하는 번호 생성 도구</p>
+        <h1>🎰 프리미엄 복권 번호 생성기</h1>
+        <p>로또 6/45와 연금복권 720+ 번호를 확률 기반으로 추출해보세요</p>
     </header>
 
     <div class="container">
         
         <!-- 생성기 섹션 -->
         <section id="generator" class="card tool-area">
-            <h2>번호 생성하기</h2>
-            <p>버튼을 클릭하면 45개의 숫자 중 중복되지 않는 6개의 번호와 보너스 번호를 생성합니다.</p>
-            <button onclick="generateLotto()">신규 번호 조합 추출</button>
-            <div id="result-container" class="result-box">
-                <div id="result"></div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('lotto')">로또 6/45</button>
+                <button class="tab-btn" onclick="showTab('pension')">연금복권 720+</button>
+            </div>
+
+            <!-- 로또 탭 -->
+            <div id="lotto-tab" class="tab-content active">
+                <h2>로또 번호 생성기</h2>
+                <p>45개의 숫자 중 중복되지 않는 6개의 번호와 보너스 번호를 추출합니다.</p>
+                <button class="generate-btn" onclick="generateLotto()">신규 로또 번호 추출</button>
+                <div id="lotto-result-container" class="result-box">
+                    <div id="lotto-result"></div>
+                </div>
+            </div>
+
+            <!-- 연금복권 탭 -->
+            <div id="pension-tab" class="tab-content">
+                <h2>연금복권 720+ 생성기</h2>
+                <p>1조~5조와 각 자리수(0~9) 6자리를 무작위로 추출합니다.</p>
+                <button class="generate-btn pension-btn" onclick="generatePension()">신규 연금복권 번호 추출</button>
+                <div id="pension-result-container" class="result-box">
+                    <div id="pension-result"></div>
+                </div>
             </div>
         </section>
 
-        <!-- 정보 섹션 (고품질 콘텐츠) -->
+        <!-- 정보 섹션 -->
         <section id="info" class="card">
-            <h2>로또 확률 및 통계 정보</h2>
+            <h2>복권 확률 및 통계 정보</h2>
             <div class="info-grid">
                 <div class="info-item">
-                    <h3>당첨 확률 안내</h3>
-                    <p>1등 당첨 확률은 1/8,145,060입니다. 본 생성기는 순수 확률에 기반하여 매 시행마다 독립적인 번호를 추출합니다.</p>
+                    <h3>로또 1등 확률</h3>
+                    <p>약 1/8,145,060입니다. (45개 중 6개 적중)</p>
                 </div>
                 <div class="info-item">
-                    <h3>번호 선택 팁</h3>
-                    <p>과거 당첨 번호의 합계 범위를 확인해보세요. 보통 100~170 사이의 합계가 가장 빈번하게 등장합니다.</p>
+                    <h3>연금복권 1등 확률</h3>
+                    <p>1/5,000,000입니다. 로또보다 당첨 확률이 약 1.6배 높습니다.</p>
                 </div>
                 <div class="info-item">
-                    <h3>홀짝 비율</h3>
-                    <p>6개 번호의 홀수와 짝수 비율이 3:3 또는 2:4, 4:2인 경우가 전체의 약 80%를 차지합니다.</p>
+                    <h3>연금복권 당첨금</h3>
+                    <p>1등 당첨 시 월 700만원씩 20년간 지급받습니다. (세전 기준)</p>
                 </div>
                 <div class="info-item">
-                    <h3>연속 번호</h3>
-                    <p>연속된 두 숫자가 포함되는 조합은 전체 당첨의 절반 이상에서 발견됩니다.</p>
+                    <h3>번호 선택의 독립성</h3>
+                    <p>모든 회차는 독립 시행입니다. 과거 번호가 미래 당첨에 영향을 주지 않으므로 재미로 활용해주세요.</p>
                 </div>
             </div>
         </section>
@@ -329,8 +399,7 @@
         <!-- 사이트 소개 -->
         <section id="about" class="card">
             <h2>사이트 소개</h2>
-            <p>본 사이트는 사용자들에게 로또 번호 선택의 즐거움과 기본적인 통계 정보를 제공하기 위해 제작되었습니다. 과도한 몰입은 금물이며, 소액으로 건전하게 즐기는 로또 문화를 권장합니다.</p>
-            <p><strong>주요 기능:</strong> 무작위 번호 추출, 당첨 통계 정보 제공, 다크모드 지원, 사용자 소통 기능(댓글/문의).</p>
+            <p>본 사이트는 사용자들에게 로또와 연금복권 번호 선택의 편의성을 제공하기 위해 제작되었습니다. 과도한 몰입은 건강에 해롭습니다. 건전한 게임 문화를 지향합니다.</p>
         </section>
 
         <!-- 제휴 문의 -->
@@ -349,7 +418,7 @@
                     <label for="message">문의 내용</label>
                     <textarea name="message" id="message" placeholder="제휴 관련 내용을 상세히 적어주세요" required></textarea>
                 </div>
-                <button type="submit">문의 보내기</button>
+                <button type="submit" class="generate-btn" style="width:100%">문의 보내기</button>
             </form>
         </section>
 
@@ -359,13 +428,12 @@
             <div id="disqus_thread"></div>
         </section>
 
-        <!-- 개인정보처리방침 (애드센스 필수) -->
+        <!-- 개인정보처리방침 -->
         <section id="privacy" class="card" style="font-size: 0.85rem; color: #666;">
             <h2>개인정보처리방침</h2>
-            <p>1. 본 사이트는 사용자의 개인정보를 서버에 직접 저장하지 않습니다.<br>
-            2. 제휴 문의 폼은 Formspree 서비스를 이용하며, 입력된 이메일은 문의 응대 목적으로만 사용됩니다.<br>
-            3. 광고 및 댓글 서비스를 위해 Google AdSense와 Disqus의 쿠키가 사용될 수 있습니다.<br>
-            4. 사용자는 브라우저 설정을 통해 쿠키 수집을 거부할 수 있습니다.</p>
+            <p>1. 본 사이트는 사용자의 개인정보를 저장하지 않습니다.<br>
+            2. 문의 폼은 Formspree 서비스를 이용하며, 입력된 정보는 응대 목적으로만 사용됩니다.<br>
+            3. 광고 및 댓글 서비스를 위해 Google AdSense와 Disqus의 쿠키가 사용될 수 있습니다.</p>
         </section>
 
     </div>
@@ -380,6 +448,19 @@
     </footer>
 
     <script>
+        // 탭 전환 기능
+        function showTab(type) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const btns = document.querySelectorAll('.tab-btn');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            btns.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(type + '-tab').classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // 테마 토글
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDarkMode = document.body.classList.contains('dark-mode');
@@ -390,9 +471,10 @@
             document.body.classList.add('dark-mode');
         }
 
+        // 로또 생성 로직
         function generateLotto() {
-            const resultDiv = document.getElementById("result");
-            const container = document.getElementById("result-container");
+            const resultDiv = document.getElementById("lotto-result");
+            const container = document.getElementById("lotto-result-container");
             resultDiv.innerHTML = "";
             container.style.display = "block";
 
@@ -412,6 +494,31 @@
                         <span>${j + 1}세트:</span>
                         ${numHtml}
                         <span class="bonus-text"> + ${bonus}</span>
+                    </div>
+                `;
+            }
+        }
+
+        // 연금복권 생성 로직
+        function generatePension() {
+            const resultDiv = document.getElementById("pension-result");
+            const container = document.getElementById("pension-result-container");
+            resultDiv.innerHTML = "";
+            container.style.display = "block";
+
+            for (let j = 0; j < 5; j++) {
+                const group = Math.floor(Math.random() * 5) + 1;
+                const digits = [];
+                for (let i = 0; i < 6; i++) {
+                    digits.push(Math.floor(Math.random() * 10));
+                }
+
+                let digitsHtml = digits.map(d => `<span class="pension-num">${d}</span>`).join('');
+                resultDiv.innerHTML += `
+                    <div class="set">
+                        <span>${j + 1}세트:</span>
+                        <span class="pension-group">${group}조</span>
+                        ${digitsHtml}
                     </div>
                 `;
             }
